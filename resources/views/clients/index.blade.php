@@ -9,6 +9,10 @@
 <body>
     <h1>Client List</h1>
 
+    @if (session('success'))
+    <p>{{ session('success') }}</p>
+    @endif
+    
     <a href="{{ url('/clients/create') }}">Add New Client</a>
 
     <br><br>

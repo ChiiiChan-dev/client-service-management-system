@@ -32,6 +32,7 @@ class ClientController extends Controller
 
         $client = Client::create($validated);
 
-        return response()->json($client, 201);
+        return redirect('/clients')
+        ->with('success', 'Client added successfully!');
     }
 }
