@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\ServiceHistoryController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -17,3 +18,9 @@ Route::post('/clients', [ClientController::class, 'store']);
 Route::get('/appointments/create', [AppointmentController::class, 'create']);
 Route::get('/appointments', [AppointmentController::class, 'index']);
 Route::post('/appointments', [AppointmentController::class, 'store']);
+
+// Service History Routes
+Route::get('/service-histories/create', [ServiceHistoryController::class, 'create']);
+Route::get('/service-histories', [ServiceHistoryController::class, 'index']);
+Route::post('/service-histories', [ServiceHistoryController::class, 'store']);
+

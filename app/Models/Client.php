@@ -17,4 +17,9 @@ class Client extends Model
     {
     return $this->hasMany(Appointment::class);
     }
+    
+    public function serviceHistories(): HasMany
+    {
+    return $this->hasMany(ServiceHistory::class);
+    }
 }
