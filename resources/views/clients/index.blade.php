@@ -3,7 +3,7 @@
 @section('title', 'Clients')
 
 @section('content')
-
+   
     <h2>Client List</h2>
 
     @if (session('success'))
@@ -12,15 +12,16 @@
         </p>
     @endif
 
-    <form action="/clients" method="GET">
-    <input
-        type="text"
-        name="search"
-        value="{{ $search }}"
-    >   
-    
+    <form action="/clients" method="GET" class="search-form">
+        <input
+            type="text"
+            name="search"
+            value="{{ $search }}"
+            placeholder="Search by client name or contact information..."
+        >
 
-    <a href="/clients">Clear</a>
+        <button type="submit">Search</button>
+        <a href="/clients" class="clear-search">Clear</a>
     </form>
 
     <br>
@@ -36,10 +37,11 @@
                 <th>Name</th>
                 <th>Address</th>
                 <th>Contact Information</th>
+                <th>Actions</th>
             </tr>
         </thead>
 
-        <tbody>
+            <tbody>
             @forelse ($clients as $client)
                 <tr>
                     <td>{{ $client->id }}</td>
@@ -47,16 +49,30 @@
                         <a href="/clients/{{ $client->id }}">
                             {{ $client->name }}
                         </a>
-                    </td>                    
+                    </td>
                     <td>{{ $client->address }}</td>
                     <td>{{ $client->contact_information }}</td>
+                    <td>
+                        <form action="/clients/{{ $client->id }}" method="POST"
+                            onsubmit="return confirm('Are you sure you want to permanently delete this client and all associated records?');">
+                            @csrf
+                            @method('DELETE')
+
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="4">No clients found.</td>
+                    <td colspan="5">No clients found.</td>
                 </tr>
             @endforelse
-        </tbody>
+            </tbody>
     </table>
 
+    <br>
+
+    <a href="/" class="back-link">← Back to Dashboard</a>
+
 @endsection
+

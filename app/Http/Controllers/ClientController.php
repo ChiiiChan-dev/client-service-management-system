@@ -52,4 +52,20 @@ class ClientController extends Controller
 
         return view('clients.show', compact('client'));
     }
+
+    public function destroy($id)
+    {
+    $client = Client::findOrFail($id);
+
+    $client->appointments()->delete();
+    $client->serviceHistories()->delete();
+
+    $client->delete();
+
+    return redirect('/clients')->with(
+        'success',
+        'Client and associated records deleted successfully.'
+    );
+    }
+
 }

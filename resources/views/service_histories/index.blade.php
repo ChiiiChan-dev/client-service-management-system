@@ -36,17 +36,23 @@
                     <td>{{ $history->service_type }}</td>
                     <td>{{ $history->device_appliance }}</td>
                     <td>
-                        <details>
-                            <summary>View full description</summary>
+                        <details class="diagnostic-details">
+                        <summary>View description</summary>
 
-                            <p>{{ $history->diagnostics_problem }}</p>
+                        <div class="diagnostic-content">
+                            {{ $history->diagnostics_problem }}
+                        </div>
                         </details>
-                    </td>                 
+                    </td>           
                        <td>
-                        {{ $history->service_fee !== null
-                            ? '₱' . number_format($history->service_fee, 2)
-                            : 'Not specified' }}
-                    </td>
+                            @if ($history->service_fee !== null)
+                                <span class="service-fee">
+                                    ₱{{ number_format($history->service_fee, 2) }}
+                                </span>
+                            @else
+                                <span class="fee-unspecified">Not specified</span>
+                            @endif
+                        </td>
                 </tr>
             @empty
                 <tr>
@@ -55,5 +61,9 @@
             @endforelse
         </tbody>
     </table>
+
+    <br>
+
+    <a href="/" class="back-link">← Back to Dashboard</a>
 
 @endsection

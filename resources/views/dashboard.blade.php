@@ -149,6 +149,20 @@
         </tbody>
     </table>
 
+    
+    <!-- Dashboard Footer -->
+    <footer class="dashboard-footer">
+        <div class="footer-help">
+            <span class="footer-info-icon">ⓘ</span>
 
+            <p>
+                Need help? Contact your system administrator for assistance.
+            </p>
+        </div>
+
+        <div class="footer-version">
+            Client Service Management System v1.0
+        </div>
+    </footer>
 
 @endsection

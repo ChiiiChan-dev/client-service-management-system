@@ -32,7 +32,17 @@
                     <td>{{ $appointment->client->name }}</td>
                     <td>{{ $appointment->reason_for_visit }}</td>
                     <td>{{ $appointment->appointment_date }}</td>
-                    <td>{{ $appointment->status }}</td>
+                    <td>
+                    @if ($appointment->status === 'Pending')
+                        <span class="status-badge status-pending">Pending</span>
+                    @elseif ($appointment->status === 'In Progress')
+                        <span class="status-badge status-progress">In Progress</span>
+                    @elseif ($appointment->status === 'Completed')
+                        <span class="status-badge status-completed">Completed</span>
+                    @elseif ($appointment->status === 'Cancelled')
+                        <span class="status-badge status-cancelled">Cancelled</span>
+                    @endif
+                    </td>
                 </tr>
             @empty
                 <tr>
@@ -41,5 +51,9 @@
             @endforelse
         </tbody>
     </table>
+    
+    <br>
+    
+    <a href="/" class="back-link">← Back to Dashboard</a>
 
 @endsection
