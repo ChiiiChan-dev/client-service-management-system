@@ -1,11 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Service History</title>
-</head>
-<body>
+@extends('layouts.app')
 
-    <h1>Service History Records</h1>
+@section('title', 'Service History')
+
+@section('content')
+
+    <h2>Service History Records</h2>
 
     @if (session('success'))
         <p style="color: green;">
@@ -13,11 +12,11 @@
         </p>
     @endif
 
-    <a href="/service-histories/create">Add Service History</a>
+    <a href="/service-history/create">Add Service History</a>
 
     <br><br>
 
-    <table border="1" cellpadding="10">
+    <table class="data-table">
         <thead>
             <tr>
                 <th>Client</th>
@@ -36,10 +35,16 @@
                     <td>{{ $history->service_date }}</td>
                     <td>{{ $history->service_type }}</td>
                     <td>{{ $history->device_appliance }}</td>
-                    <td>{{ $history->diagnostics_problem }}</td>
                     <td>
+                        <details>
+                            <summary>View full description</summary>
+
+                            <p>{{ $history->diagnostics_problem }}</p>
+                        </details>
+                    </td>                 
+                       <td>
                         {{ $history->service_fee !== null
-                            ? number_format($history->service_fee, 2)
+                            ? '₱' . number_format($history->service_fee, 2)
                             : 'Not specified' }}
                     </td>
                 </tr>
@@ -51,5 +56,4 @@
         </tbody>
     </table>
 
-</body>
-</html>
+@endsection

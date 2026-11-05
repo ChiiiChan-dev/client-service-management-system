@@ -34,7 +34,7 @@ class ServiceHistoryController extends Controller
 
     \App\Models\ServiceHistory::create($validated);
 
-    return redirect('/service-histories')
+    return redirect('/service-history')
         ->with('success', 'Service history added successfully!');
     }
 }

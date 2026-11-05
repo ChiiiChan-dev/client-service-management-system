@@ -1,49 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Appointment List</title>
-</head>
-<body>
+@extends('layouts.app')
 
-    <h1>Appointment List</h1>
+@section('title', 'Appointments')
+
+@section('content')
+
+    <h2>Appointment List</h2>
 
     @if (session('success'))
-        <p>{{ session('success') }}</p>
+        <p style="color: green;">
+            {{ session('success') }}
+        </p>
     @endif
 
-    <a href="{{ url('/appointments/create') }}">Add New Appointment</a>
+    <a href="/appointments/create">Add New Appointment</a>
 
     <br><br>
 
-    @if ($appointments->isEmpty())
-        <p>No appointments have been added yet.</p>
-    @else
-        <table border="1" cellpadding="8">
-            <thead>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Client</th>
+                <th>Reason for Visit</th>
+                <th>Appointment Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @forelse ($appointments as $appointment)
                 <tr>
-                    <th>ID</th>
-                    <th>Client Name</th>
-                    <th>Reason for Visit</th>
-                    <th>Appointment Date</th>
-                    <th>Status</th>
+                    <td>{{ $appointment->client->name }}</td>
+                    <td>{{ $appointment->reason_for_visit }}</td>
+                    <td>{{ $appointment->appointment_date }}</td>
+                    <td>{{ $appointment->status }}</td>
                 </tr>
-            </thead>
+            @empty
+                <tr>
+                    <td colspan="4">No appointments found.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
 
-            <tbody>
-                @foreach ($appointments as $appointment)
-                    <tr>
-                        <td>{{ $appointment->id }}</td>
-                        <td>{{ $appointment->client->name }}</td>
-                        <td>{{ $appointment->reason_for_visit }}</td>
-                        <td>{{ $appointment->appointment_date }}</td>
-                        <td>{{ $appointment->status }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @endif
-
-</body>
-</html>
+@endsection

@@ -15,11 +15,18 @@ class ClientController extends Controller
     }
 
 
-    public function index()
+    public function index(Request $request)
     {
-        $clients = Client::all();
+    $search = $request->input('search');
 
-        return view('clients.index', compact('clients'));
+    $clients = Client::query()
+        ->when($search, function ($query, $search) {
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('contact_information', 'like', "%{$search}%");
+        })
+        ->get();
+
+    return view('clients.index', compact('clients', 'search'));
     }
 
     public function store(Request $request)
@@ -33,6 +40,16 @@ class ClientController extends Controller
         $client = Client::create($validated);
 
         return redirect('/clients')
-        ->with('success', 'Client added successfully!');
+            ->with('success', 'Client added successfully!');
+    }
+
+    public function show($id)
+    {
+        $client = Client::with([
+            'appointments',
+            'serviceHistories'
+        ])->findOrFail($id);
+
+        return view('clients.show', compact('client'));
     }
 }

@@ -1,45 +1,62 @@
+@extends('layouts.app')
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Client List</title>
-</head>
-<body>
-    <h1>Client List</h1>
+@section('title', 'Clients')
+
+@section('content')
+
+    <h2>Client List</h2>
 
     @if (session('success'))
-    <p>{{ session('success') }}</p>
+        <p style="color: green;">
+            {{ session('success') }}
+        </p>
     @endif
+
+    <form action="/clients" method="GET">
+    <input
+        type="text"
+        name="search"
+        value="{{ $search }}"
+    >   
     
-    <a href="{{ url('/clients/create') }}">Add New Client</a>
+
+    <a href="/clients">Clear</a>
+    </form>
+
+    <br>
+
+    <a href="/clients/create">Add New Client</a>
 
     <br><br>
 
-    @if ($clients->isEmpty())
-        <p>No clients have been added yet.</p>
-    @else
-        <table border="1" cellpadding="8">
-            <thead>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Contact Information</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @forelse ($clients as $client)
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th>Contact Information</th>
+                    <td>{{ $client->id }}</td>
+                    <td>
+                        <a href="/clients/{{ $client->id }}">
+                            {{ $client->name }}
+                        </a>
+                    </td>                    
+                    <td>{{ $client->address }}</td>
+                    <td>{{ $client->contact_information }}</td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach ($clients as $client)
-                    <tr>
-                        <td>{{ $client->id }}</td>
-                        <td>{{ $client->name }}</td>
-                        <td>{{ $client->address }}</td>
-                        <td>{{ $client->contact_information }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @endif
-</body>
-</html>
+            @empty
+                <tr>
+                    <td colspan="4">No clients found.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+
+@endsection

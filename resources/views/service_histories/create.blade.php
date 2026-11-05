@@ -1,13 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Add Service History</title>
-</head>
-<body>
+@extends('layouts.app')
 
-    <h1>Add Service History</h1>
+@section('title', 'Add Service History')
 
-    <form action="/service-histories" method="POST">
+@section('content')
+
+    <h2>Add Service History</h2>
+
+    @if ($errors->any())
+        <div style="color: red;">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form action="/service-history" method="POST" class="data-form">
         @csrf
 
         <label>Client:</label>
@@ -15,39 +24,70 @@
             <option value="">Select a Client</option>
 
             @foreach ($clients as $client)
-                <option value="{{ $client->id }}">
+                <option value="{{ $client->id }}"
+                    {{ old('client_id') == $client->id ? 'selected' : '' }}>
                     {{ $client->name }}
                 </option>
             @endforeach
         </select>
+
         <br><br>
 
         <label>Service Date:</label>
-        <input type="date" name="service_date" required>
+        <input
+            type="date"
+            name="service_date"
+            value="{{ old('service_date') }}"
+            required
+        >
+
         <br><br>
 
         <label>Service Type:</label>
-        <input type="text" name="service_type" required>
+        <input
+            type="text"
+            name="service_type"
+            value="{{ old('service_type') }}"
+            required
+        >
+
         <br><br>
 
         <label>Device / Appliance:</label>
-        <input type="text" name="device_appliance" required>
+        <input
+            type="text"
+            name="device_appliance"
+            value="{{ old('device_appliance') }}"
+            required
+        >
+
         <br><br>
 
         <label>Diagnostics / Problem:</label>
-        <textarea name="diagnostics_problem" required></textarea>
+        <textarea name="diagnostics_problem" required>{{ old('diagnostics_problem') }}</textarea>
+
         <br><br>
 
         <label>Service Fee (Optional):</label>
-        <input type="number" name="service_fee" step="0.01" min="0">
+        <input
+            type="number"
+            name="service_fee"
+            step="0.01"
+            min="0"
+            value="{{ old('service_fee') }}"
+        >
+
+        @error('service_fee')
+            <p style="color: red;">{{ $message }}</p>
+        @enderror
+
         <br><br>
 
-        <button type="submit">Save Service History</button>
+        <button type="submit" class="submit-button">Save Service History</button>
     </form>
 
     <br>
 
-    <a href="/service-histories">View Service History</a>
+    <a href="/service-history">Back to Service History</a>
 
-</body>
-</html>
+@endsection

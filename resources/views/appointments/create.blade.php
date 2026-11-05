@@ -1,28 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Appointment</title>
-</head>
-<body>
+@extends('layouts.app')
 
-    <h1>Add New Appointment</h1>
+@section('title', 'Add Appointment')
+
+@section('content')
+
+    <h2>Add New Appointment</h2>
 
     @if ($errors->any())
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
+        <div style="color: red;">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
     @endif
 
-    <form action="{{ url('/appointments') }}" method="POST">
+    <form action="/appointments" method="POST" class="data-form">
         @csrf
 
-        <label for="client_id">Select Client:</label>
-        <select id="client_id" name="client_id" required>
-            <option value="">-- Select Client --</option>
+        <label>Client:</label>
+        <select name="client_id" required>
+            <option value="">Select a Client</option>
 
             @foreach ($clients as $client)
                 <option value="{{ $client->id }}"
@@ -34,33 +33,43 @@
 
         <br><br>
 
-        <label for="reason_for_visit">Reason for Visit:</label>
-        <input type="text" id="reason_for_visit"
-               name="reason_for_visit"
-               value="{{ old('reason_for_visit') }}" required>
+        <label>Reason for Visit:</label>
+        <input
+            type="text"
+            name="reason_for_visit"
+            value="{{ old('reason_for_visit') }}"
+            required
+        >
 
         <br><br>
 
-        <label for="appointment_date">Appointment Date:</label>
-        <input type="date" id="appointment_date"
-               name="appointment_date"
-               value="{{ old('appointment_date') }}" required>
+        <label>Appointment Date:</label>
+        <input
+            type="date"
+            name="appointment_date"
+            value="{{ old('appointment_date') }}"
+            required
+        >
 
         <br><br>
 
-        <label for="status">Status:</label>
-        <select id="status" name="status" required>
-            <option value="Pending">Pending</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Completed">Completed</option>
-            <option value="Cancelled">Cancelled</option>
+        <label>Status:</label>
+        <select name="status" required>
+            @foreach (['Pending', 'In Progress', 'Completed', 'Cancelled'] as $status)
+                <option value="{{ $status }}"
+                    {{ old('status', 'Pending') == $status ? 'selected' : '' }}>
+                    {{ $status }}
+                </option>
+            @endforeach
         </select>
 
         <br><br>
 
-        <button type="submit">Save Appointment</button>
-
+        <button type="submit" class="submit-button">Save Appointment</button>
     </form>
 
-</body>
-</html>
+    <br>
+
+    <a href="/appointments">Back to Appointment List</a>
+
+@endsection
