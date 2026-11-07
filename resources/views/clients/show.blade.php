@@ -86,7 +86,8 @@
                 @endforelse
             </tbody>
         </table>    
-
-<a href="/clients">Back to Client List</a>
-
+    <br>
+        <a href="/clients" class="btn btn-secondary">
+            ← Back to Client List
+        </a>
 @endsection
