@@ -6,7 +6,9 @@
 
     <h2>Add New Client</h2>
 
-    <a href="/clients" class="back-link">← Back to Client List</a>
+        <a href="/clients" class="btn btn-secondary">
+            ← Back to Client List
+        </a>
 
     @if ($errors->any())
         <div class="form-errors">
@@ -59,7 +61,5 @@
     </form>
 
     <br>
-
-    <a href="/" class="back-link">← Back to Dashboard</a>
 
 @endsection

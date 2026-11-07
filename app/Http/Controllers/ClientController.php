@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ClientController extends Controller
 {
@@ -25,6 +26,10 @@ class ClientController extends Controller
                   ->orWhere('contact_information', 'like', "%{$search}%");
         })
         ->get();
+
+    if ($request->ajax()) {
+        return view('clients.partials.table-rows', compact('clients'));
+    }
 
     return view('clients.index', compact('clients', 'search'));
     }
@@ -57,15 +62,16 @@ class ClientController extends Controller
     {
     $client = Client::findOrFail($id);
 
-    $client->appointments()->delete();
-    $client->serviceHistories()->delete();
+        DB::transaction(function () use ($client) {
+            $client->appointments()->delete();
+            $client->serviceHistories()->delete();
+            $client->delete();
+        });
 
-    $client->delete();
-
-    return redirect('/clients')->with(
-        'success',
-        'Client and associated records deleted successfully.'
-    );
+        return redirect('/clients')->with(
+            'success',
+            'Client and associated records deleted successfully.'
+        );
     }
 
 }

@@ -46,6 +46,7 @@
             <thead>
                 <tr>
                     <th>Service Date</th>
+                    <th>Related Appointment</th>
                     <th>Service Type</th>
                     <th>Device / Appliance</th>
                     <th>Diagnostics / Problem</th>
@@ -57,6 +58,11 @@
                 @forelse ($client->serviceHistories as $history)
                     <tr>
                         <td>{{ $history->service_date }}</td>
+                        <td>
+                            {{ $history->appointment
+                                ? $history->appointment->appointment_date
+                                : 'Walk-in' }}
+                        </td>
                         <td>{{ $history->service_type }}</td>
                         <td>{{ $history->device_appliance }}</td>
 
@@ -75,12 +81,12 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5">No service history records found.</td>
+                        <td colspan="6">No service history records found.</td>
                     </tr>
                 @endforelse
             </tbody>
-        </table>
+        </table>    
 
-    <a href="/clients">Back to Client List</a>
+<a href="/clients">Back to Client List</a>
 
 @endsection

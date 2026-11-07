@@ -32,8 +32,27 @@
     </header>
 @endif
 
+    @if (!request()->is('/'))
+    <nav class="main-nav">
+        <a href="/" class="{{ request()->is('/') ? 'active' : '' }}">
+            Dashboard
+        </a>
 
-    <main>
+        <a href="/clients" class="{{ request()->is('clients*') ? 'active' : '' }}">
+            Clients
+        </a>
+
+        <a href="/appointments" class="{{ request()->is('appointments*') ? 'active' : '' }}">
+            Appointments
+        </a>
+
+        <a href="/service-history" class="{{ request()->is('service-history*') ? 'active' : '' }}">
+            Service History
+        </a>
+    </nav>
+@endif
+
+    <main class="main-content">
         @yield('content')
     </main>
 

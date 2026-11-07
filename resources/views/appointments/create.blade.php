@@ -6,7 +6,9 @@
 
     <h2>Add New Appointment</h2>
 
-    <a href="/appointments" class="back-link">← Back to Appointment List</a>
+            <a href="/appointments" class="btn btn-secondary">
+                ← Back to Appointment List
+            </a>
 
     @if ($errors->any())
         <div class="form-errors">
@@ -73,9 +75,5 @@
 
         <button type="submit" class="submit-button">Save Appointment</button>
     </form>
-
-    <br>
-
-    <a href="/" class="back-link">← Back to Dashboard</a>
 
 @endsection

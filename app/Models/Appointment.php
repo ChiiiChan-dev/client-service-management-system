@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Appointment extends Model
 {
@@ -17,5 +18,10 @@ class Appointment extends Model
     public function client(): BelongsTo
     {
     return $this->belongsTo(Client::class);
+    }
+
+    public function serviceHistory(): HasOne
+    {
+    return $this->hasOne(ServiceHistory::class);
     }
 }

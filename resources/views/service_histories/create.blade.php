@@ -6,7 +6,9 @@
 
     <h2>Add Service History</h2>
 
-    <a href="/service-history" class="back-link">← Back to Service History</a>
+        <a href="/service-history" class="btn btn-secondary">
+            ← Back to Service History
+        </a>
 
     @if ($errors->any())
         <div class="form-errors">
@@ -31,6 +33,20 @@
                     <option value="{{ $client->id }}"
                         {{ old('client_id') == $client->id ? 'selected' : '' }}>
                         {{ $client->name }}
+                    </option>
+                @endforeach
+            </select>
+            
+            <label for="appointment_id">Related Appointment (Optional)</label>
+            <select id="appointment_id" name="appointment_id">
+                <option value="">Walk-in / No appointment</option>
+
+                @foreach ($appointments as $appointment)
+                    <option value="{{ $appointment->id }}"
+                        {{ old('appointment_id') == $appointment->id ? 'selected' : '' }}>
+                        {{ $appointment->client->name }}
+                        — {{ $appointment->appointment_date }}
+                        — {{ $appointment->reason_for_visit }}
                     </option>
                 @endforeach
             </select>
@@ -99,9 +115,5 @@
             Save Service History
         </button>
     </form>
-
-    <br>
-
-    <a href="/" class="back-link">← Back to Dashboard</a>
 
 @endsection

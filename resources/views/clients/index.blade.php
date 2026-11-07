@@ -7,28 +7,27 @@
     <h2>Client List</h2>
 
     @if (session('success'))
-        <p style="color: green;">
+        <p id="success-message" style="color: green;">
             {{ session('success') }}
         </p>
     @endif
 
-    <form action="/clients" method="GET" class="search-form">
+    <form action="/clients" method="GET" class="search-form" id="client-search-form">
         <input
             type="text"
             name="search"
+            id="client-search-input"
             value="{{ $search }}"
             placeholder="Search by client name or contact information..."
+            autocomplete="off"
         >
-
-        <button type="submit">Search</button>
-        <a href="/clients" class="clear-search">Clear</a>
     </form>
 
+    <a href="/clients/create" class="btn btn-primary">
+        + Add New Client
+    </a>
+
     <br>
-
-    <a href="/clients/create">Add New Client</a>
-
-    <br><br>
 
     <table class="data-table">
         <thead>
@@ -41,38 +40,62 @@
             </tr>
         </thead>
 
-            <tbody>
-            @forelse ($clients as $client)
-                <tr>
-                    <td>{{ $client->id }}</td>
-                    <td>
-                        <a href="/clients/{{ $client->id }}">
-                            {{ $client->name }}
-                        </a>
-                    </td>
-                    <td>{{ $client->address }}</td>
-                    <td>{{ $client->contact_information }}</td>
-                    <td>
-                        <form action="/clients/{{ $client->id }}" method="POST"
-                            onsubmit="return confirm('Are you sure you want to permanently delete this client and all associated records?');">
-                            @csrf
-                            @method('DELETE')
-
-                            <button type="submit">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="5">No clients found.</td>
-                </tr>
-            @endforelse
+            <tbody id="client-table-body">
+                @include('clients.partials.table-rows', ['clients' => $clients])
             </tbody>
+        
     </table>
 
-    <br>
+    <script>
+        const searchInput = document.getElementById('client-search-input');
+        const tableBody = document.getElementById('client-table-body');
 
-    <a href="/" class="back-link">← Back to Dashboard</a>
+        let searchTimer;
+
+        searchInput.addEventListener('input', function () {
+            clearTimeout(searchTimer);
+
+            searchTimer = setTimeout(async function () {
+                const search = searchInput.value;
+
+                try {
+                    const response = await fetch(
+                        `/clients?search=${encodeURIComponent(search)}`,
+                        {
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        }
+                    );
+
+                    if (!response.ok) {
+                        throw new Error('Search request failed.');
+                    }
+
+                    tableBody.innerHTML = await response.text();
+
+                } catch (error) {
+                    console.error(error);
+                }
+            }, 100); // Delay of 100 milliseconds   
+        });
+    </script>
+
+    <script>
+        const successMessage = document.getElementById('success-message');
+
+        if (successMessage) {
+            setTimeout(function () {
+                successMessage.style.transition = 'opacity 0.5s ease';
+                successMessage.style.opacity = '0';
+
+                setTimeout(function () {
+                    successMessage.remove();
+                }, 500);
+
+            }, 3000);
+        }
+    </script>
 
 @endsection
 

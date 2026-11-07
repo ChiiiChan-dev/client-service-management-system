@@ -32,6 +32,4 @@
 
     </div>
 
-    <a href="/" class="back-link">← Back to Dashboard</a>
-
 @endsection

@@ -7,20 +7,23 @@
     <h2>Service History Records</h2>
 
     @if (session('success'))
-        <p style="color: green;">
+        <p id="success-message" style="color: green;">
             {{ session('success') }}
         </p>
     @endif
 
-    <a href="/service-history/create">Add Service History</a>
+            <a href="/service-history/create" class="btn btn-primary">
+                + Add Service History
+            </a>
 
-    <br><br>
+    <br>
 
     <table class="data-table">
         <thead>
             <tr>
                 <th>Client</th>
                 <th>Service Date</th>
+                <th>Related Appointment</th>
                 <th>Service Type</th>
                 <th>Device / Appliance</th>
                 <th>Diagnostics / Problem</th>
@@ -33,6 +36,11 @@
                 <tr>
                     <td>{{ $history->client->name }}</td>
                     <td>{{ $history->service_date }}</td>
+                    <td>
+                        {{ $history->appointment
+                            ? $history->appointment->appointment_date
+                            : 'Walk-in' }}
+                    </td>
                     <td>{{ $history->service_type }}</td>
                     <td>{{ $history->device_appliance }}</td>
                     <td>
@@ -56,7 +64,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="6">No service history records found.</td>
+                    <td colspan="7">No service history records found.</td>
                 </tr>
             @endforelse
         </tbody>
@@ -64,6 +72,20 @@
 
     <br>
 
-    <a href="/" class="back-link">← Back to Dashboard</a>
+    <script>
+        const successMessage = document.getElementById('success-message');
+
+        if (successMessage) {
+            setTimeout(function () {
+                successMessage.style.transition = 'opacity 0.5s ease';
+                successMessage.style.opacity = '0';
+
+                setTimeout(function () {
+                    successMessage.remove();
+                }, 500);
+
+            }, 3000);
+        }
+    </script>
 
 @endsection

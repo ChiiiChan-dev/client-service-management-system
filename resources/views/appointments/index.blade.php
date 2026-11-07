@@ -7,14 +7,16 @@
     <h2>Appointment List</h2>
 
     @if (session('success'))
-        <p style="color: green;">
+        <p id="success-message" style="color: green;">
             {{ session('success') }}
         </p>
     @endif
-
-    <a href="/appointments/create">Add New Appointment</a>
-
-    <br><br>
+        
+    <a href="/appointments/create" class="btn btn-primary">
+            + Add New Appointment
+        </a>
+    
+    <br>
 
     <table class="data-table">
         <thead>
@@ -51,9 +53,21 @@
             @endforelse
         </tbody>
     </table>
-    
-    <br>
-    
-    <a href="/" class="back-link">← Back to Dashboard</a>
+
+    <script>
+        const successMessage = document.getElementById('success-message');
+
+        if (successMessage) {
+            setTimeout(function () {
+                successMessage.style.transition = 'opacity 0.5s ease';
+                successMessage.style.opacity = '0';
+
+                setTimeout(function () {
+                    successMessage.remove();
+                }, 500);
+
+            }, 3000);
+        }
+    </script>
 
 @endsection
